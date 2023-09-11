@@ -1,16 +1,11 @@
-import union_find.CountIslands;
+import union_find.NumberOfProvinces;
 
 public class Main {
     public static void main(String[] args) {
-        char[][] grid = {
-                {'1', '1', '1', '0', '0'},
-                {'1', '1', '0', '0', '0'},
-                {'1', '0', '0', '0', '0'},
-                {'0', '0', '1', '0', '1'}
-        };
+        int[][] isConnected = {{1,0,0,1},{0,1,1,0},{0,1,1,1},{1,0,1,1}};
 
-        CountIslands solution = new CountIslands();
+        NumberOfProvinces solution = new NumberOfProvinces();
 
-        System.out.println(solution.numIslands(grid));
+        System.out.println(solution.findCircleNum(isConnected));
     }
 }
