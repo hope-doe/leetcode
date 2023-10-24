@@ -21,30 +21,40 @@ import java.util.*;
  */
 public class NestedIterator implements Iterator<Integer> {
 
-    LinkedList<Integer> queue = new LinkedList<>();
+    private Deque<NestedInteger> stack;
 
     public NestedIterator(List<NestedInteger> nestedList) {
-        fillTheQueue(nestedList);
-    }
-
-    private void fillTheQueue(List<NestedInteger> nestedList) {
-        for (NestedInteger nestedInteger: nestedList) {
-            if (nestedInteger.isInteger()) {
-                queue.add(nestedInteger.getInteger());
-            } else {
-                fillTheQueue(nestedInteger.getList());
-            }
-        }
+        stack = new ArrayDeque(nestedList);
     }
 
     @Override
     public Integer next() {
-        return queue.pollFirst();
+        if (stack.isEmpty()) throw new IllegalStateException("Next called on an empty stack.");
+
+        return stack.pop().getInteger();
     }
 
     @Override
     public boolean hasNext() {
-        return !queue.isEmpty();
+        return surfaceInteger();
+    }
+
+    private boolean surfaceInteger() {
+        if (stack.isEmpty()) {
+            return false;
+        } else {
+            if (stack.peek().isInteger()) {
+                return true;
+            } else {
+                List<NestedInteger> nestedList = stack.pop().getList();
+
+                for (int i = nestedList.size() - 1; i >= 0; i --) {
+                    stack.addFirst(nestedList.get(i));
+                }
+
+                return surfaceInteger();
+            }
+        }
     }
 }
 
